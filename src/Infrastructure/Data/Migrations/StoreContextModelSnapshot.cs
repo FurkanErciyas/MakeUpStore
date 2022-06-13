@@ -92,7 +92,7 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("ApplicationCore.Entities.Product", b =>
                 {
-                    b.HasOne("ApplicationCore.Entities.Category", "Brand")
+                    b.HasOne("ApplicationCore.Entities.Brand", "Brand")
                         .WithMany()
                         .HasForeignKey("BrandId")
                         .OnDelete(DeleteBehavior.Cascade)
