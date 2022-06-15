@@ -17,11 +17,12 @@ namespace ApplicationCore.Specifications
             
             if (categoryId.HasValue)
                 Query.Where(x => x.CategoryId == categoryId);
+        }
 
-            //Query.OrderBy(x => x.Price).OrderBy(x => x.Name);
-            
-            //Query.Include(x => x.Category);
-        }    
+        public ProductsFilterSpecification(int? brandId, int? categoryId, int skip, int take) : this(brandId, categoryId)
+        {
+            Query.Skip(skip).Take(take);
+        }
     }
 }
 
