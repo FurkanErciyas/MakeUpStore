@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Interfaces;
+using ApplicationCore.Services;
 using Infrastructure.Data;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Builder;
@@ -16,6 +17,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Web.Interfaces;
+using Web.Middlewares;
 using Web.Services;
 
 namespace Web
@@ -47,8 +49,9 @@ namespace Web
                 .AddEntityFrameworkStores<AppIdentityDbContext>();
 
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
-
+            services.AddScoped<IBasketService, BasketService>();
             services.AddScoped<IHomeViewModelService, HomeViewModelService>();
+            services.AddScoped<IBasketViewModelService, BasketViewModelService>();
 
             services.AddControllersWithViews();
         }
@@ -70,7 +73,7 @@ namespace Web
             app.UseHttpsRedirection();
 
             var ci = new CultureInfo("en-US");
-            ci.NumberFormat.CurrencySymbol = "€";
+            ci.NumberFormat.CurrencySymbol = "₺";
             var supportedCultures = new[] { ci };
             app.UseRequestLocalization(options =>
             {
@@ -84,6 +87,7 @@ namespace Web
 
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseTransferBasket();
 
             app.UseEndpoints(endpoints =>
             {

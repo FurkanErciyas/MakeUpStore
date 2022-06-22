@@ -4,7 +4,7 @@
     var pi = Model.PaginationInfo;
 }
 
-<h1>PRODUCTS</h1>
+<h1>Products</h1>
 
 <div class="border rounded bg-light p-2">
     <form class="form-inline" method="get">
@@ -12,7 +12,7 @@
         <select asp-for="BrandId" asp-items="Model.Brands" class="form-control mr-sm-2 mb-sm-0 mb-2"></select>
         <label class="mr-sm-2 mb-sm-0 mb-2">Category</label>
         <select asp-for="CategoryId" asp-items="Model.Categories" class="form-control mr-sm-2 mb-sm-0 mb-2"></select>
-        <button class="btn btn-primary mb-sm-0 m-2">List</button>
+        <button class="btn btn-primary mb-sm-0 mb-2">List</button>
     </form>
 </div>
 
@@ -24,7 +24,12 @@
                 <div class="card-body">
                     <img src="~/img/products/@product.PictureUri" alt="@product.Name" class="w-100" />
                     <div class="product-name mt-2" title="@product.Name">@product.Name</div>
-                    <div class="mt-2">@product.PriceTry</div>
+                    <div class="mt-3 d-flex justify-content-between">
+                        <div>@product.PriceTry</div>
+                        <a data-add-item-to-basket="@product.Id" href="#" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Add to Basket">
+                            <i class="fa-solid fa-lg fa-cart-plus"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -34,9 +39,9 @@
 <div class="text-center mt-3">
     Showing @pi.DisplayStart to @pi.DisplayEnd of @pi.TotalItems products
 </div>
+
 <nav class="d-flex justify-content-center mt-2">
     <ul class="pagination">
-
         @if (pi.HasPrevious)
         {
             <li class="page-item">
@@ -50,6 +55,7 @@
             </li>
         }
 
+
         @foreach (var i in pi.PageNumbers)
         {
             if (i == -1)
@@ -60,7 +66,7 @@
             }
             else
             {
-                <li class="page-item @(i == pi.CurrentPage ? "active": "")">
+                <li class="page-item @(i == pi.CurrentPage ? "active" : "")">
                     <a class="page-link" asp-route-brandId="@Model.BrandId" asp-route-categoryId="@Model.CategoryId" asp-route-pageId="@i">@i</a>
                 </li>
             }
@@ -80,3 +86,21 @@
         }
     </ul>
 </nav>
+
+@section Scripts {
+    <script>
+        $("[data-add-item-to-basket]").click(function (event) {
+            event.preventDefault();
+            const id = $(this).data("add-item-to-basket");
+            $.ajax({
+                url: "@Url.Action("AddItem", "Basket")",
+                type: "POST",
+                data: { productId: id },
+                success: function (data) {
+                    $("#navBasketItemCount").text(data.totalItems);
+                    successMessage("Item successfully added to your cart.");
+                }
+            });
+        });
+    </script>
+}

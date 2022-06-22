@@ -14,7 +14,7 @@ namespace ApplicationCore.Specifications
         {
             if (brandId.HasValue)
                 Query.Where(x => x.BrandId == brandId);
-            
+
             if (categoryId.HasValue)
                 Query.Where(x => x.CategoryId == categoryId);
         }

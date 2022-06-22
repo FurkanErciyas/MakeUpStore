@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Web.Interfaces;
 using Web.Models;
+using Web;
 
 namespace Web.Services
 {
@@ -23,10 +24,11 @@ namespace Web.Services
             _brandRepo = brandRepo;
             _categoryRepo = categoryRepo;
         }
-        public async Task<HomeViewModel> GetHomeViewModelServiceAsync(int? brandId, int? categoryId, int pageId)
+
+        public async Task<HomeViewModel> GetHomeViewModelAsync(int? brandId, int? categoryId, int pageId)
         {
-            int skip = (pageId - 1) * Constant.ITEMS_PER_PAGE;
-            int take = Constant.ITEMS_PER_PAGE;
+            int skip = (pageId - 1) * Constants.ITEMS_PER_PAGE;
+            int take = Constants.ITEMS_PER_PAGE;
             var specProducts = new ProductsFilterSpecification(brandId, categoryId, skip, take);
             var specAllProducts = new ProductsFilterSpecification(brandId, categoryId);
             var allProductsCount = await _productRepo.CountAsync(specAllProducts);
@@ -41,7 +43,7 @@ namespace Web.Services
                         Id = x.Id,
                         Name = x.Name,
                         PictureUri = x.PictureUri,
-                        Price = x.Price,
+                        Price = x.Price
                     }
                 ).ToList(),
                 Brands = await GetBrandsAsync(),
@@ -55,18 +57,21 @@ namespace Web.Services
                     ItemsOnPage = products.Count,
                 }
             };
+
             return vm;
         }
 
         private async Task<List<SelectListItem>> GetCategoriesAsync()
         {
             var list = (await _categoryRepo.GetAllAsync())
-                .Select(x => new SelectListItem()
-                {
-                    Text = x.Name,
-                    Value = x.Id.ToString()
-                }).OrderBy(x => x.Text).ToList();
-
+                .Select(x =>
+                    new SelectListItem()
+                    {
+                        Text = x.Name,
+                        Value = x.Id.ToString()
+                    })
+                .OrderBy(x => x.Text)
+                .ToList();
             list.Insert(0, new SelectListItem("All", ""));
             return list;
         }
@@ -74,12 +79,14 @@ namespace Web.Services
         private async Task<List<SelectListItem>> GetBrandsAsync()
         {
             var list = (await _brandRepo.GetAllAsync())
-                .Select(x => new SelectListItem()
-                {
-                    Text = x.Name,
-                    Value = x.Id.ToString()
-                }).OrderBy(x => x.Text).ToList();
-
+                .Select(x =>
+                    new SelectListItem()
+                    {
+                        Text = x.Name,
+                        Value = x.Id.ToString()
+                    })
+                .OrderBy(x => x.Text)
+                .ToList();
             list.Insert(0, new SelectListItem("All", ""));
             return list;
         }

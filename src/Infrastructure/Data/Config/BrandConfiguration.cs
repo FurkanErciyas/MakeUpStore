@@ -13,9 +13,7 @@ namespace Infrastructure.Data.Config
     {
         public void Configure(EntityTypeBuilder<Brand> builder)
         {
-            builder.Property(x => x.Name)
-                .IsRequired()
-                .HasMaxLength(100);
+            builder.Property(x => x.Name).IsRequired().HasMaxLength(100);
         }
     }
 }

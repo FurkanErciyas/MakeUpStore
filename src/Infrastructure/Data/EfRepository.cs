@@ -45,7 +45,7 @@ namespace Infrastructure.Data
 
         public async Task<T> FirstOrDefaultAsync(ISpecification<T> specification)
         {
-            return await _context.Set<T>().WithSpecification(specification).FirstOrDefaultAsync();    
+            return await _context.Set<T>().WithSpecification(specification).FirstOrDefaultAsync();
         }
 
         public async Task<List<T>> GetAllAsync()
@@ -70,3 +70,4 @@ namespace Infrastructure.Data
         }
     }
 }
+
