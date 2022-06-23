@@ -47,3 +47,5 @@ https://docs.microsoft.com/en-us/aspnet/core/fundamentals/localization?view=aspn
 https://sweetalert2.github.io/#examples
 
 https://codepen.io/yigith/pen/XWZGwyJ
+
+https://getbootstrap.com/docs/4.6/examples/checkout/

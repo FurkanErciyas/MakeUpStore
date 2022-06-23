@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Interfaces;
+using ApplicationCore.Service;
 using ApplicationCore.Services;
 using Infrastructure.Data;
 using Infrastructure.Identity;
@@ -52,6 +53,7 @@ namespace Web
             services.AddScoped<IBasketService, BasketService>();
             services.AddScoped<IHomeViewModelService, HomeViewModelService>();
             services.AddScoped<IBasketViewModelService, BasketViewModelService>();
+            services.AddScoped<IOrderService, OrderService>();
 
             services.AddControllersWithViews();
         }
